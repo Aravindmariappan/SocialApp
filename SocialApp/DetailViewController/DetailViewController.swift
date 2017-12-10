@@ -20,7 +20,7 @@ class DetailViewController: UIViewController, UICollectionViewDataSource, UIColl
     
     var contentArray : [Person]!
     var personDetailVC : PersonDetailsViewController!
-    
+    var currentPageIndex : NSInteger = 0
     override func viewDidLoad() {
         super.viewDidLoad()
         contentArray = configureData()
@@ -29,7 +29,7 @@ class DetailViewController: UIViewController, UICollectionViewDataSource, UIColl
         configureCollectionView(galleryCollectionView)
         personDetailVC = configureDetailViewController() as! PersonDetailsViewController
         addChildVC(personDetailVC)
-        personDetailVC.configureWithPerson(contentArray[0])
+        personDetailVC.configureWithPerson(contentArray[0], withAnimation: false)
     }
 
     //MARK: Configure Data
@@ -62,15 +62,23 @@ class DetailViewController: UIViewController, UICollectionViewDataSource, UIColl
         rectShape.path = UIBezierPath(roundedRect: bottomView.bounds, byRoundingCorners: [.topRight, .topLeft], cornerRadii: CGSize(width: 30, height: 30)).cgPath
         bottomView.layer.mask = rectShape
         bottomView.clipsToBounds = true
+        bottomDetailViewHieghtConstraint.constant = DetailViewController.bottomViewHeight.short
+        self.view.layoutIfNeeded()
         
-        //Pan gesture
+        //Swipe gesture
         let upSwipeGesture = UISwipeGestureRecognizer.init(target: self, action:#selector(bottomViewAnimated(gesture:)))
         upSwipeGesture.direction = .up
         bottomView.addGestureRecognizer(upSwipeGesture)
-        
+
         let downSwipeGesture = UISwipeGestureRecognizer.init(target: self, action:#selector(bottomViewAnimated(gesture:)))
         downSwipeGesture.direction = .down
         bottomView.addGestureRecognizer(downSwipeGesture)
+        
+        //Pan gesture
+//        let panGesture = UIPanGestureRecognizer.init(target: self, action:#selector(bottomViewAnimatedWithPan(gesture:)))
+//        bottomView.addGestureRecognizer(panGesture)
+//        panGesture.require(toFail: upSwipeGesture)
+//        panGesture.require(toFail: downSwipeGesture)
     }
     
     func configureCollectionView(_ collectionView:UICollectionView) {
@@ -99,12 +107,15 @@ class DetailViewController: UIViewController, UICollectionViewDataSource, UIColl
     //MARK: Scroll Delegate
     
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        for cell: UICollectionViewCell in galleryCollectionView.visibleCells {
-            let indexPath: IndexPath? = galleryCollectionView.indexPath(for: cell)
-            let person = self.contentArray[(indexPath?.row)!]
-            personDetailVC.configureWithPerson(person)
+        let cellWidth: CGFloat = galleryCollectionView.frame.size.width
+        let currentPageIndex = NSInteger(galleryCollectionView.contentOffset.x / cellWidth)
+        if self.currentPageIndex != currentPageIndex {
+            self.currentPageIndex = currentPageIndex
+            let person = self.contentArray[currentPageIndex]
+            personDetailVC.configureWithPerson(person, withAnimation: true)
         }
     }
+    
     //MARK: People Detail VC
     
     func addChildVC(_ viewController: UIViewController) {
@@ -143,7 +154,7 @@ class DetailViewController: UIViewController, UICollectionViewDataSource, UIColl
         let swipeDirection = gesture.direction
         if swipeDirection == .up {
             self.bottomDetailViewHieghtConstraint.constant = DetailViewController.bottomViewHeight.full
-            UIView.animate(withDuration: 1.0, animations: {
+            UIView.animate(withDuration: 0.75, animations: {
                 self.view.layoutIfNeeded()
             })
             animateCellWithScaleType(.scaleDown)
@@ -151,25 +162,35 @@ class DetailViewController: UIViewController, UICollectionViewDataSource, UIColl
         else {
             self.bottomDetailViewHieghtConstraint.constant = DetailViewController.bottomViewHeight.short
             animateCellWithScaleType(.scaleUp)
-            UIView.animate(withDuration: 1.0, animations: {
+            UIView.animate(withDuration: 0.75, animations: {
                 self.view.layoutIfNeeded()
             })
         }
     }
     
     func animateCellWithScaleType(_ scaleType:ScaleType) {
-        let displayedCellIndexPath = currentDisplayedIndexPath()
+        let displayedCellIndexPath = IndexPath.init(item: currentPageIndex, section: 0)
         let galleryCell : GalleryCollectionViewCell = galleryCollectionView.cellForItem(at: displayedCellIndexPath) as! GalleryCollectionViewCell
         galleryCell.scaleUpCellWithScaleType(scaleType, animated: true)
     }
     
-    func currentDisplayedIndexPath() -> IndexPath {
-        var visibleRect: CGRect = CGRect()
-        visibleRect.origin = (galleryCollectionView?.contentOffset)!
-        visibleRect.size = (galleryCollectionView?.bounds.size)!
-        let visiblePoint = CGPoint(x: visibleRect.midX, y: visibleRect.midY)
-        let visibleIndexPath: IndexPath = (galleryCollectionView?.indexPathForItem(at: visiblePoint))!
-        
-        return visibleIndexPath
+    @objc func bottomViewAnimatedWithPan(gesture:UIPanGestureRecognizer) {
+//        let bottomView = gesture.view!
+        let translationY : CGFloat = abs(gesture.translation(in: self.view).y)
+        print("translationY : \(translationY)")
+        var heightConstraint : CGFloat = self.bottomDetailViewHieghtConstraint.constant
+        if gesture.state != .cancelled {
+            if (heightConstraint + translationY) > DetailViewController.bottomViewHeight.short {
+                if (heightConstraint + translationY) <= DetailViewController.bottomViewHeight.full {
+                    heightConstraint += translationY
+                    self.bottomDetailViewHieghtConstraint.constant = heightConstraint
+                    self.view.layoutIfNeeded()
+                }
+            }
+        }
     }
+    
+    
+    
+    
 }

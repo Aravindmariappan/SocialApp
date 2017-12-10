@@ -34,7 +34,7 @@ class GalleryCollectionViewCell: UICollectionViewCell {
     func scaleUpCellWithScaleType(_ scaleType:ScaleType, animated animate:Bool) {
         var xScale = CGFloat(1.00)
         var yScale = CGFloat(1.00)
-        let animationDuration = animate == true ? 1.00 : 0.00
+        let animationDuration = animate == true ? 0.75 : 0.00
         if scaleType == .scaleUp {
             xScale = 1.25
             yScale = 1.25
