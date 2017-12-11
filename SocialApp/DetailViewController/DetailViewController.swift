@@ -12,7 +12,7 @@ class DetailViewController: UIViewController, UICollectionViewDataSource, UIColl
 
     static let vcIdentifier = "detailVCIdentifier"
     
-    static let bottomViewHeight = (full: CGFloat(400.0), short: CGFloat(150.0))
+    static let bottomViewHeight = (full: CGFloat(485.0), short: CGFloat(235.0))
     
     @IBOutlet weak var bottomDetailView: UIView!
     @IBOutlet weak var galleryCollectionView: UICollectionView!
@@ -37,17 +37,19 @@ class DetailViewController: UIViewController, UICollectionViewDataSource, UIColl
     func configureData() -> [Person] {
         let imageData = ["Image1","Image2","Image3"]
         let userName = ["Iron Man","Dhanush","Deepika Padukone"]
+        let description = ["Superhero","Actor","Actress"]
         let followersCount = [111,222,333]
         let followingCount = [611,822,533]
         let postsCount = [11,52,33]
         var contentArray = [Person]()
         for index in 0...2 {
             let person = Person()
-            person.imageName = imageData[index];
-            person.name = userName[index];
-            person.followersCount = followersCount[index];
-            person.followingCount = followingCount[index];
-            person.postsCount = postsCount[index];
+            person.imageName = imageData[index]
+            person.personDescription = description[index]
+            person.name = userName[index]
+            person.followersCount = followersCount[index]
+            person.followingCount = followingCount[index]
+            person.postsCount = postsCount[index]
             contentArray.append(person)
         }
         
@@ -56,12 +58,6 @@ class DetailViewController: UIViewController, UICollectionViewDataSource, UIColl
     //MARK: View Config
     
     func configureBottomView(_ bottomView:UIView) {
-        let rectShape = CAShapeLayer()
-        rectShape.bounds = bottomView.frame
-        rectShape.position = bottomView.center
-        rectShape.path = UIBezierPath(roundedRect: bottomView.bounds, byRoundingCorners: [.topRight, .topLeft], cornerRadii: CGSize(width: 30, height: 30)).cgPath
-        bottomView.layer.mask = rectShape
-        bottomView.clipsToBounds = true
         bottomDetailViewHieghtConstraint.constant = DetailViewController.bottomViewHeight.short
         self.view.layoutIfNeeded()
         
@@ -139,7 +135,7 @@ class DetailViewController: UIViewController, UICollectionViewDataSource, UIColl
     
     func addFit(toContainerConstarints toView: UIView, toParentView parentView: UIView) {
         toView.translatesAutoresizingMaskIntoConstraints = false
-        let childViewHeight = 400
+        let childViewHeight = DetailViewController.bottomViewHeight.full
         let metrics = ["childViewHeight":childViewHeight]
         let viewsDictionary = ["toView": toView]
         let horizontalconstraintsArray = NSLayoutConstraint.constraints(withVisualFormat: "|-0-[toView]-0-|", options: .alignAllLastBaseline, metrics: nil, views: viewsDictionary)

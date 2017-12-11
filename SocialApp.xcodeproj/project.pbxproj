@@ -19,6 +19,7 @@
 		F27B4C981FDBCAC2003CDCBF /* GalleryCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F27B4C961FDBCAC2003CDCBF /* GalleryCollectionViewCell.xib */; };
 		F27B4C9A1FDBD17E003CDCBF /* PersonDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F27B4C991FDBD17E003CDCBF /* PersonDetailsViewController.swift */; };
 		F27B4C9D1FDC0626003CDCBF /* Person.swift in Sources */ = {isa = PBXBuildFile; fileRef = F27B4C9C1FDC0626003CDCBF /* Person.swift */; };
+		F27C42F91FDD742500AAD8ED /* ThumbnailCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F27C42F81FDD742500AAD8ED /* ThumbnailCollectionViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,6 +49,7 @@
 		F27B4C961FDBCAC2003CDCBF /* GalleryCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GalleryCollectionViewCell.xib; sourceTree = "<group>"; };
 		F27B4C991FDBD17E003CDCBF /* PersonDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonDetailsViewController.swift; sourceTree = "<group>"; };
 		F27B4C9C1FDC0626003CDCBF /* Person.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Person.swift; sourceTree = "<group>"; };
+		F27C42F81FDD742500AAD8ED /* ThumbnailCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThumbnailCollectionViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -118,6 +120,7 @@
 			children = (
 				F27B4C951FDBCAC2003CDCBF /* GalleryCollectionViewCell.swift */,
 				F27B4C961FDBCAC2003CDCBF /* GalleryCollectionViewCell.xib */,
+				F27C42F81FDD742500AAD8ED /* ThumbnailCollectionViewCell.swift */,
 			);
 			path = CollectionViewCells;
 			sourceTree = "<group>";
@@ -239,6 +242,7 @@
 				F27B4C971FDBCAC2003CDCBF /* GalleryCollectionViewCell.swift in Sources */,
 				F27B4C721FDB976C003CDCBF /* ViewController.swift in Sources */,
 				F27B4C9D1FDC0626003CDCBF /* Person.swift in Sources */,
+				F27C42F91FDD742500AAD8ED /* ThumbnailCollectionViewCell.swift in Sources */,
 				F27B4C701FDB976C003CDCBF /* AppDelegate.swift in Sources */,
 				F27B4C931FDBBFB2003CDCBF /* DetailViewController.swift in Sources */,
 			);
